@@ -74,30 +74,35 @@ export default declare([BaseWidget], {
     if (this.config.hasCustomLayer) {
       this.alertLayer = this.map.getLayer(this.config.customMapLayer);
 
+      this.setLoading(false);
+
       try {
         this.updateDefinitionExpression();
-
-        this.setLoading(false);
       } catch (err) {
         alert(
           'Layer defined is not a valid Waze data layer. Widget will not work as expected.'
         );
       }
-    } else {
-      const featureServerUrl = this.config.featureServerUrl;
-      const layerOptions = {
-        outFields: ['*'],
-        visible: false
-      };
 
-      this.alertLayer = new FeatureLayer(featureServerUrl + '/0', layerOptions);
-
-      this.updateDefinitionExpression();
-
-      this.map.addLayer(this.alertLayer);
+      return;
     }
 
+    this.initDefaultFeatureLayer();
     this.refreshInterval(this.config.refreshInterval);
+  },
+
+  initDefaultFeatureLayer() {
+    const featureServerUrl = this.config.featureServerUrl;
+    const layerOptions = {
+      outFields: ['*'],
+      visible: false
+    };
+
+    this.alertLayer = new FeatureLayer(featureServerUrl + '/0', layerOptions);
+
+    this.updateDefinitionExpression();
+
+    this.map.addLayer(this.alertLayer);
   },
 
   updateDataModel() {
@@ -116,11 +121,17 @@ export default declare([BaseWidget], {
       this.updateAlertCount(features);
 
       this.updateAlertCountView(this.alertTypesModel);
-
-      if (this.currentTimeFilter.pubMillis === 0) {
-        this.currentTimeFilter = this.timeModel[0];
-      }
     });
+  },
+
+  updateLayerDataModel() {
+    const features = this.alertLayer._graphicsVal;
+
+    this.updateAlertCount(features);
+
+    this.updateAlertCountView(this.alertTypesModel);
+
+    this.setLoading(false);
   },
 
   setTimeModel(timeModel) {
@@ -199,7 +210,7 @@ export default declare([BaseWidget], {
       ACCIDENT: 'accident'
     };
 
-    const iconSize = 40;
+    const iconSize = 50;
 
     const symbolOptions = {
       url: `${this.config.imagePath}/pins/${iconFileName[type] ||
@@ -289,7 +300,8 @@ export default declare([BaseWidget], {
         .find(x => x.quarter === i + 1)
         .datetime.split(' ');
 
-      x.innerHTML = timeStrArr[0] + '<br />' + timeStrArr[1] + timeStrArr[2];
+      x.innerHTML =
+        timeStrArr[0] + '<br />' + timeStrArr[1] + (timeStrArr[2] || '');
     });
   },
 
@@ -328,5 +340,19 @@ export default declare([BaseWidget], {
     this.updateButtonsView();
     this.updateTimeFilterView();
     this.updateLoadView();
+
+    if (!this.config.hasCustomLayer) return;
+
+    const onMapUpdateStart = () => {
+      this.setLoading(true);
+    };
+
+    const onMapUpdateEnd = err => {
+      this.updateLayerDataModel();
+    };
+
+    this.map.on('update-start', onMapUpdateStart);
+
+    this.map.on('update-end', onMapUpdateEnd);
   }
 });
