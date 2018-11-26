@@ -1,0 +1,116 @@
+<div>
+  <div class="jimu-r-row waze-alerts-button-list">
+    <div class="col-1-4">
+      <div class="waze-alerts-count" id="JAM_alert_count"></div>
+      <button
+        class="waze-alerts-button waze-alerts-button-with-tooltip"
+        data-alert-type="JAM"
+        data-dojo-attach-event="click:_toggleAlerts"
+      >
+        <div
+          class="waze-alerts-icon"
+          style="background-image: url(widgets/WazeAlerts/images/buttons/traffic.png)"
+        ></div>
+        <div class="waze-alerts-button-tooltip">${nls.tooltip.traffic}</div>
+      </button>
+    </div>
+    <div class="col-1-4">
+      <div class="waze-alerts-count" id="ROAD_CLOSED_alert_count"></div>
+      <button
+        class="waze-alerts-button waze-alerts-button-with-tooltip"
+        data-alert-type="ROAD_CLOSED"
+        data-dojo-attach-event="click:_toggleAlerts"
+      >
+        <div
+          class="waze-alerts-icon"
+          style="background-image: url(widgets/WazeAlerts/images/buttons/construction.png)"
+        ></div>
+        <div class="waze-alerts-button-tooltip">${nls.tooltip.roadClosed}</div>
+      </button>
+    </div>
+    <div class="col-1-4">
+      <div class="waze-alerts-count" id="ACCIDENT_alert_count"></div>
+      <button
+        class="waze-alerts-button waze-alerts-button-with-tooltip"
+        data-alert-type="ACCIDENT"
+        data-dojo-attach-event="click:_toggleAlerts"
+      >
+        <div
+          class="waze-alerts-icon"
+          style="background-image: url(widgets/WazeAlerts/images/buttons/accident.png)"
+        ></div>
+        <div class="waze-alerts-button-tooltip">${nls.tooltip.accidents}</div>
+      </button>
+    </div>
+    <div class="col-1-4">
+      <div class="waze-alerts-count" id="WEATHERHAZARD_alert_count"></div>
+      <button
+        class="waze-alerts-button waze-alerts-button-with-tooltip"
+        data-alert-type="WEATHERHAZARD"
+        data-dojo-attach-event="click:_toggleAlerts"
+      >
+        <div
+          class="waze-alerts-icon"
+          style="background-image: url(widgets/WazeAlerts/images/buttons/hazard.png)"
+        ></div>
+        <div class="waze-alerts-button-tooltip">
+          ${nls.tooltip.weatherHazard}
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="waze-alerts-time">
+    <input
+      type="radio"
+      class="waze-alerts-time-input"
+      name="time_filter"
+      id="1_4_day"
+      value="1"
+      data-dojo-attach-event="change:_filterByPeriod"
+      checked
+    />
+    <div class="waze-alerts-time-view">
+      <div class="waze-alerts-time-date"></div>
+      <label for="1_4_day" class="waze-alerts-time-option"></label>
+      <div class="waze-alerts-time-label">${nls.timeFilter.oldest}</div>
+    </div>
+    <input
+      type="radio"
+      class="waze-alerts-time-input"
+      name="time_filter"
+      id="2_4_day"
+      value="2"
+      data-dojo-attach-event="change:_filterByPeriod"
+    />
+    <div class="waze-alerts-time-view">
+      <div class="waze-alerts-time-date"></div>
+      <label for="2_4_day" class="waze-alerts-time-option"></label>
+    </div>
+    <input
+      type="radio"
+      class="waze-alerts-time-input"
+      name="time_filter"
+      id="3_4_day"
+      value="3"
+      data-dojo-attach-event="change:_filterByPeriod"
+    />
+    <div class="waze-alerts-time-view">
+      <div class="waze-alerts-time-date"></div>
+      <label for="3_4_day" class="waze-alerts-time-option"></label>
+    </div>
+    <input
+      type="radio"
+      class="waze-alerts-time-input"
+      name="time_filter"
+      id="4_4_day"
+      value="4"
+      data-dojo-attach-event="change:_filterByPeriod"
+    />
+    <div class="waze-alerts-time-view">
+      <div class="waze-alerts-time-date"></div>
+      <label for="4_4_day" class="waze-alerts-time-option"></label>
+      <div class="waze-alerts-time-label">${nls.timeFilter.latest}</div>
+    </div>
+  </div>
+</div>

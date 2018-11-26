@@ -1,0 +1,6 @@
+{
+  "imagePath": "widgets/WazeAlerts/images",
+  "dataPeriod": 86400,
+  "featureServerUrl": "https://services9.arcgis.com/hbNUXYa0vWyWMkdB/ArcGIS/rest/services/Waze_Alerts_and_Traffic_(View)/FeatureServer",
+  "refreshInterval": 300000
+}

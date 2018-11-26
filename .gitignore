@@ -1,0 +1,5 @@
+widgets/WazeAlerts/backup/
+
+node_modules
+
+dist

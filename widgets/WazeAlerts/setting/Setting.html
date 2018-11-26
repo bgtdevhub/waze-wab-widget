@@ -1,0 +1,25 @@
+<div>
+  <div class="waze-alerts-question">
+    ${nls.question} <small>${nls.note}</small>
+  </div>
+  <input
+    class="waze-alerts-checkbox"
+    type="checkbox"
+    id="custom_layer_check"
+    data-dojo-attach-point="hasCustomLayer"
+  />
+  <label class="waze-alerts-checkbox-toggle" for="custom_layer_check"></label>
+  <div
+    class="waze-alerts-layers-container hidden"
+    data-dojo-attach-point="layersContainer"
+  >
+    <p><label for="layer_selection">${nls.selectLabel}</label></p>
+    <div class="waze-alerts-select">
+      <select
+        class="waze-alerts-layers"
+        id="layer_selection"
+        data-dojo-attach-point="layer"
+      ></select>
+    </div>
+  </div>
+</div>

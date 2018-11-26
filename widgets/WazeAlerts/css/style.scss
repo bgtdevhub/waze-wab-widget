@@ -1,0 +1,336 @@
+$black: #333;
+$gray-dark: #464646;
+$gray: #676767;
+$white: #fff;
+$waze-blue: #78d0e9;
+$waze-blue-light: #bbe7f4;
+$orange: #fdc633;
+$brown: #653330;
+$bounce-easing: cubic-bezier(0, 0, 0.65, 2.15);
+$el-in-time-filter-count: 8;
+
+@keyframes turn {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.waze-alerts {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &-count {
+    width: 34px;
+    height: 14px;
+    line-height: 14px;
+    border-radius: 7px;
+    background: transparentize($gray, 0.2);
+    color: $white;
+    font-size: 0.6rem;
+    margin: 0 auto 5px;
+    letter-spacing: 1px;
+    transform: none;
+    opacity: 1;
+    transition: opacity 0.2s ease-out, transform 0.2s $bounce-easing;
+
+    &:empty {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+
+    @for $n from 1 through 4 {
+      @at-root [class^='col']:nth-child(#{$n}) & {
+        transition-delay: 0.06s * ($n - 1);
+      }
+    }
+  }
+
+  &-button {
+    display: flex;
+    position: relative;
+    background: $waze-blue;
+    height: 60px;
+    width: 60px;
+    margin: 0 auto;
+    padding: 0;
+    border: 3px solid $white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: inset 1px 1px 4px 1px rgba(0, 0, 0, 0.2),
+      1px 2px 6px 1px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s ease, filter 0.2s ease;
+
+    &:after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: $waze-blue-light;
+      opacity: 0;
+      position: absolute;
+    }
+
+    @at-root .waze-alerts-loading &.active:after {
+      animation: turn 1s linear infinite;
+      opacity: 1;
+    }
+
+    &:hover {
+      background: darken($waze-blue, 5%);
+    }
+
+    &:not(.active) {
+      filter: grayscale(80%);
+    }
+
+    &-list {
+      margin: 0 auto;
+      text-align: center;
+      overflow: unset;
+
+      [class^='col'] {
+        &:nth-child(1) {
+          .waze-alerts-button:after {
+            top: 0;
+            left: calc(50% - 2px);
+            transform-origin: center 27px;
+          }
+        }
+
+        &:nth-child(2) {
+          .waze-alerts-button:after {
+            top: calc(50% - 2px);
+            right: 0;
+            transform-origin: -23px center;
+          }
+        }
+
+        &:nth-child(3) {
+          .waze-alerts-button:after {
+            bottom: 0;
+            left: calc(50% - 2px);
+            transform-origin: center -23px;
+          }
+        }
+
+        &:nth-child(4) {
+          .waze-alerts-button:after {
+            top: calc(50% - 2px);
+            left: 0;
+            transform-origin: 27px center;
+          }
+        }
+      }
+    }
+
+    &-tooltip {
+      height: 20px;
+      line-height: 20px;
+      padding: 0 10px;
+      font-size: 0.65rem;
+      font-weight: bold;
+      color: $black;
+      background: $waze-blue;
+      border-radius: 10px;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-5px);
+      opacity: 0;
+      transition: transform 0.2s $bounce-easing, opacity 0.2s ease-out;
+      will-change: transform;
+      pointer-events: none;
+      white-space: nowrap;
+
+      @at-root .waze-alerts-button:hover & {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    }
+  }
+
+  &-icon {
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    pointer-events: none;
+    background: {
+      size: contain;
+      position: center;
+      repeat: no-repeat;
+    }
+
+    @at-root [class^='col']:first-child & {
+      width: 35px;
+    }
+
+    @at-root [class^='col']:nth-child(3) & {
+      width: 40px;
+    }
+  }
+
+  &-image-wrapper {
+    height: 100%;
+    overflow: hidden;
+
+    img {
+      width: 200%;
+      transform: translateX(-25%);
+      pointer-events: none;
+    }
+  }
+
+  &-time {
+    display: flex;
+    margin: 86px 0 34px;
+
+    &-input {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      visibility: hidden;
+      pointer-events: none;
+      opacity: 0;
+
+      &:checked {
+        ~ .waze-alerts-time-view {
+          @for $n from 1 through $el-in-time-filter-count {
+            $r: $el-in-time-filter-count - $n;
+            @if $n % 2 == 0 {
+              &:nth-child(#{$n}) {
+                .waze-alerts-time-option:before {
+                  transition-delay: 0.1s * (($r - 1) / 2);
+                }
+              }
+            }
+          }
+
+          .waze-alerts-time-option {
+            &:before {
+              transform: none;
+              opacity: 1;
+            }
+          }
+        }
+
+        + .waze-alerts-time-view {
+          .waze-alerts-time-option {
+            &:after {
+              transform: none;
+              opacity: 1;
+            }
+          }
+
+          .waze-alerts-time-date {
+            transform: none;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    &-view {
+      flex-grow: 1;
+      display: flex;
+      position: relative;
+
+      & ~ &:before {
+        content: '';
+        position: absolute;
+        top: calc(50% - 2px);
+        right: calc(50% + 12px);
+        width: calc(100% - 24px);
+        height: 4px;
+        background: $gray;
+      }
+
+      @for $n from 1 through $el-in-time-filter-count {
+        @if $n % 2 == 0 {
+          &:nth-child(#{$n}) {
+            .waze-alerts-time-option:before {
+              transition-delay: 0.1s * (($n - 1) / 2);
+            }
+          }
+        }
+      }
+    }
+
+    &-date {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      width: 80px;
+      left: calc(50% - 40px);
+      padding: 5px;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: $white;
+      text-align: center;
+      white-space: nowrap;
+      background: transparentize($gray, 0.2);
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: {
+        property: transform, opacity;
+        duration: 0.2s;
+        timing-function: $bounce-easing;
+      }
+
+      @at-root .waze-alerts-time-view:hover & {
+        transform: none;
+        opacity: 0.6;
+      }
+    }
+
+    &-option {
+      display: block;
+      width: 30px;
+      height: 30px;
+      margin: auto;
+      border-radius: 50%;
+      border: 3px solid $gray;
+      box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.3),
+        inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+      position: relative;
+      cursor: pointer;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        background: $orange;
+        transform: scale(0.5);
+        opacity: 0;
+        transition: {
+          property: transform, opacity;
+          duration: 0.2s;
+          timing-function: cubic-bezier(0.13, 0.6, 0.58, 1);
+        }
+      }
+    }
+
+    &-label {
+      height: 14px;
+      line-height: 14px;
+      padding: 0 10px;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      font-weight: bold;
+      color: $black;
+      background: $orange;
+      border-radius: 10px;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+  }
+}

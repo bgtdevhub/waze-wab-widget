@@ -1,0 +1,82 @@
+$size: 50px;
+$cyan: #24b5cc;
+$gray: #ccc;
+
+.waze-alerts {
+  &-checkbox {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+
+    &:checked + .waze-alerts-checkbox-toggle {
+      &:before {
+        background: $cyan;
+        transform: translateX(#{$size / 2});
+        box-shadow: 0 0 8px 0 $cyan;
+      }
+    }
+
+    &-toggle {
+      display: block;
+      width: $size;
+      height: $size / 2;
+      border-radius: $size / 4;
+      position: relative;
+      background: #fafafc;
+      border: 1px solid $gray;
+      margin: 10px 0 20px;
+      cursor: pointer;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: calc(50% - 10px);
+        height: calc(100% - 10px);
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.1);
+        transition: {
+          property: transform, background;
+          duration: 0.2s;
+          timing-function: ease-out;
+        }
+      }
+    }
+  }
+
+  &-select {
+    margin-top: 10px;
+    display: inline-block;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: calc(50% - 2px);
+      right: 10px;
+      border: 4px solid transparent;
+      border-top-color: $cyan;
+      pointer-events: none;
+    }
+  }
+
+  &-layers {
+    display: block;
+    width: 150px;
+    height: 30px;
+    padding: 5px 30px 5px 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-color: $gray;
+  }
+}
+
+.hidden {
+  display: none;
+}
